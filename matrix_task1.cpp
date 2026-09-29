@@ -6,9 +6,9 @@ void rmMtx(int ** mtx, size_t m)
 {
   for (size_t i = 0; i < m; ++i)
   {
-    delete [] mtx[i];
+    delete[] mtx[i];
   }
-  delete [] mtx;  
+  delete[] mtx;  
 }
 
 int ** makeMtx(size_t m, size_t n)
@@ -29,7 +29,7 @@ int ** makeMtx(size_t m, size_t n)
   return mtxR;
 }
 
-int ** transpose(int ** mtx, size_t m, size_t n)
+int ** transpose(const int * const * mtx, size_t m, size_t n)
 {
   int ** res = makeMtx(n, m);
   for (size_t i = 0; i < m; ++i)
@@ -39,11 +39,10 @@ int ** transpose(int ** mtx, size_t m, size_t n)
       res[j][i] = mtx[i][j];
     }
   }
-  rmMtx(mtx, m);
   return res;
 }
 
-void printMtx(int ** mtx, size_t m, size_t n)
+void printMtx(const int * const * mtx, size_t m, size_t n)
 {
   for (size_t i = 0; i < m; ++i)
   {
@@ -63,6 +62,7 @@ int main()
 
   if (!(std::cin >> m >> n) || m == 0 || n == 0)
   {
+    std::cerr << "Invalid matrix dimensions\n";
     return 1;
   }
 
@@ -73,6 +73,7 @@ int main()
   }
   catch (const std::bad_alloc &)
   {
+    std::cerr << "Out of memory\n";
     return 2;
   }
 
@@ -81,6 +82,7 @@ int main()
     if (!(std::cin >> mtx[i / n][i % n])) // переход на строку через n шагов
     {
       rmMtx(mtx, m);
+      std::cerr << "Invalid matrix input\n";
       return 1;
     }
   }
@@ -93,6 +95,7 @@ int main()
   catch (const std::bad_alloc &)
   {
     rmMtx(mtx, m);
+    std::cerr << "Out of memory\n";
     return 2;
   }
 
