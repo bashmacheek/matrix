@@ -2,6 +2,15 @@
 
 #include <iostream>
 
+void rmMtx(int ** mtx, size_t m)
+{
+  for (size_t i = 0; i < m; ++i)
+  {
+    delete [] mtx[i];
+  }
+  delete [] mtx;  
+}
+
 int ** makeMtx(size_t m, size_t n)
 {
   int ** mtxR = new int * [m];
@@ -33,15 +42,6 @@ int ** transpose(int ** mtx, size_t m, size_t n)
   }
   rmMtx(mtx, m);
   return res;
-}
-
-void rmMtx(int ** mtx, size_t m)
-{
-  for (size_t i = 0; i < m; ++i)
-  {
-    delete [] mtx[i];
-  }
-  delete [] mtx;  
 }
 
 void printMtx(int ** mtx, size_t m, size_t n)
@@ -99,6 +99,6 @@ int main()
 
   printMtx(transposedMtx, n, m);
   rmMtx(transposedMtx, n);
-  
+
   return 0;
 }
