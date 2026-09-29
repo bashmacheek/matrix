@@ -32,6 +32,19 @@ void rmMtx(int ** mtx, size_t m)
   delete [] mtx;  
 }
 
+void printMtx(int ** mtx, size_t m, size_t n)
+{
+  for (size_t i = 0; i < m; ++i)
+  {
+    std::cout << mtx[i][0];
+    for (size_t j = 1; j < n; ++j)
+    {
+      std::cout << ' ' << mtx[i][j];
+    }
+    std::cout << '\n';
+  }
+}
+
 int main()
 {
   size_t m = 0;
@@ -61,6 +74,8 @@ int main()
     }
   }
 
+  printMtx(mtx, m, n);
+  
   rmMtx(mtx, m);
   return 0;
 }
