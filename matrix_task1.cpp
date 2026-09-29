@@ -14,19 +14,18 @@ void rmMtx(int ** mtx, size_t m)
 int ** makeMtx(size_t m, size_t n)
 {
   int ** mtxR = new int * [m];
-  
-  try
+  for (size_t i = 0; i < m; ++i)
   {
-    for (size_t i = 0; i < m; ++i)
+    try
     {
       mtxR[i] = new int [n];
     }
-  }
     catch (const std::bad_alloc & e)
     {
-      rmMtx(mtxR, m);
+      rmMtx(mtxR, i);
       throw;
     }
+  }
   return mtxR;
 }
 
