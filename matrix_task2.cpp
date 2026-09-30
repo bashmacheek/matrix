@@ -16,9 +16,10 @@ int ** convert(const int * t, size_t n, const size_t * lns, size_t rows)
   {
     return nullptr;
   }
-  int ** result = new int*[rows]();
+  int ** result = nullptr;
   try
   {
+    result = new int * [rows]();
     size_t t_index = 0;
     for (size_t i = 0; i < rows; ++i)
     {
@@ -31,11 +32,14 @@ int ** convert(const int * t, size_t n, const size_t * lns, size_t rows)
   }
   catch (const std::bad_alloc &)
   {
-    for (size_t i = 0; i < rows; ++i)
+    if (result != nullptr)
     {
-      delete[] result[i];
+      for (size_t i = 0; i < rows; ++i)
+      {
+        delete[] result[i];
+      }
+      delete[] result;
     }
-    delete[] result;
     return nullptr;
   }
   return result;
@@ -48,23 +52,29 @@ int main()
   const size_t rows = 4;
   size_t lns[rows] = {4, 2, 5, 1};
   int ** result = convert(t, n, lns, rows);
-  if (result != nullptr)
+  if (result == nullptr)
   {
-    for (size_t i = 0; i < rows; ++i)
-    {
-      for (size_t j = 0; j < lns[i]; ++j)
-      {
-        std::cout << result[i][j] << ' ';
-      }
-      std::cout << '\n';
-    }
-    for (size_t i = 0; i < rows; ++i)
-    {
-      delete[] result[i];
-    }
-    delete[] result;
+    std::cerr << "Error: failed to convert array\n";
+    return 1;
   }
-  
+  for (size_t i = 0; i < rows; ++i)
+  {
+    for (size_t j = 0; j < lns[i]; ++j)
+    {
+      std::cout << result[i][j];
+      if (j + 1 < lns[i])
+      {
+        std::cout << ' ';
+      }
+    }
+    std::cout << '\n';
+  }
+  for (size_t i = 0; i < rows; ++i)
+  {
+    delete[] result[i];
+  }
+  delete[] result;
+
   return 0;
 }
 
