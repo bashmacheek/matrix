@@ -15,11 +15,12 @@ int ** convert(const int * t, size_t n, const size_t * lns, size_t rows)
   {
     return nullptr;
   }
+  int ** result = new int*[rows];
   return nullptr;
 }
 
 int main()
-{;
+{
   return 0;
 }
 
