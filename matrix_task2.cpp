@@ -1,4 +1,5 @@
 #include <iostream>
+#include <new>
 
 int ** convert(const int * t, size_t n, const size_t * lns, size_t rows)
 {
@@ -15,15 +16,27 @@ int ** convert(const int * t, size_t n, const size_t * lns, size_t rows)
   {
     return nullptr;
   }
-  int ** result = new int*[rows];
-  size_t t_index = 0;
-  for (size_t i = 0; i < rows; ++i)
+  int ** result = new int*[rows]();
+  try
   {
-    result[i] = new int[lns[i]];
-    for (size_t j = 0; j < lns[i]; ++j)
+    size_t t_index = 0;
+    for (size_t i = 0; i < rows; ++i)
     {
-      result[i][j] = t[t_index++];
+      result[i] = new int[lns[i]];
+      for (size_t j = 0; j < lns[i]; ++j)
+      {
+        result[i][j] = t[t_index++];
+      }
     }
+  }
+  catch (const std::bad_alloc &)
+  {
+    for (size_t i = 0; i < rows; ++i)
+    {
+      delete[] result[i];
+    }
+    delete[] result;
+    return nullptr;
   }
   return result;
 }
